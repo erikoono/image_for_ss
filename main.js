@@ -1,8 +1,8 @@
 function insertman() {
 
   //サンプルリストからURLを取得し、配列に格納する
-  //const parent_ss_id = "19f68xiWutOv4bRv7YppXuzU8bi0Mcmq6sUS-01DDXAE" //会社
-  const parent_ss_id = "1moCUxU7O7-3j15arjCN6roY4wyl3Rn4BEATuTEYQQLI"   //家
+  const parent_ss_id = "19f68xiWutOv4bRv7YppXuzU8bi0Mcmq6sUS-01DDXAE" //会社
+  //const parent_ss_id = "1moCUxU7O7-3j15arjCN6roY4wyl3Rn4BEATuTEYQQLI"   //家
   const parent_ss = SpreadsheetApp.openById(parent_ss_id)
   const parent_sh = parent_ss.getSheetByName("フォームの回答 1")
   const list_number = parent_sh.getRange(2, 3, parent_sh.getLastRow() - 1).getValues()
@@ -18,7 +18,7 @@ function insertman() {
   let ss
   let sheet
   const r = Array.apply(null, new Array(count_list)).map(function(_, i) {
-    
+
     console.log("ループ回数：".concat(i))
 
     //100件ごとにスプレッドシートの作成
