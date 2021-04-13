@@ -1,8 +1,9 @@
 function insertman() {
 
   //サンプルリストからURLを取得し、配列に格納する
-  const parent_ss_id = "19f68xiWutOv4bRv7YppXuzU8bi0Mcmq6sUS-01DDXAE" //会社
-  //const parent_ss_id = "1moCUxU7O7-3j15arjCN6roY4wyl3Rn4BEATuTEYQQLI"   //家
+  //const parent_ss_id = "19f68xiWutOv4bRv7YppXuzU8bi0Mcmq6sUS-01DDXAE" //会社 原本
+  //const parent_ss_id = "1sJbjdRKN37po5oB7tBwPfGQlflq7jr2noArOfIKpyZg" //会社 コピー
+  const parent_ss_id = "1moCUxU7O7-3j15arjCN6roY4wyl3Rn4BEATuTEYQQLI"   //家
   const parent_ss = SpreadsheetApp.openById(parent_ss_id)
   const parent_sh = parent_ss.getSheetByName("フォームの回答 1")
   const list_number = parent_sh.getRange(2, 3, parent_sh.getLastRow() - 1).getValues()
@@ -31,11 +32,8 @@ function insertman() {
       sheet = ss.insertSheet()
     }
 
-    //ドライブから画像を取得
-    let image = DriveApp.getFileById(list_url[i][0].indexOf(',') != -1 ? list_url[i][0].substring(0, list_url[i][0].indexOf(",")).replace("https://drive.google.com/open?id=", "").replace("https://drive.google.com/file/d/", "").replace("/view?usp=sharing", "") : list_url[i][0].indexOf("\n") != -1 ? list_url[i][0].substring(0, list_url[i][0].indexOf("\n")).replace("https://drive.google.com/open?id=", "").replace("https://drive.google.com/file/d/", "").replace("/view?usp=sharing", "") : list_url[i][0].replace("https://drive.google.com/open?id=", "").replace("https://drive.google.com/file/d/", "").replace("/view?usp=sharing", ""))
-    if (image.getBlob().getContentType() == "image/jpeg") {
-      //画像を挿入
-      const values = [
+    //入力値を挿入
+    const values = [
         header_list,
         [list_number[i][0],
           list_name[i][0],
@@ -45,7 +43,13 @@ function insertman() {
           list_meigi[i][0]
         ]
       ]
-      sheet.getRange(1, 1, 2, 6).setNumberFormat('@').setValues(values)
+    sheet.getRange(1, 1, 2, 6).setNumberFormat('@').setValues(values)
+
+    //ドライブから画像を取得
+    let image = DriveApp.getFileById(list_url[i][0].indexOf(',') != -1 ? list_url[i][0].substring(0, list_url[i][0].indexOf(",")).replace("https://drive.google.com/open?id=", "").replace("https://drive.google.com/file/d/", "").replace("/view?usp=sharing", "") : list_url[i][0].indexOf("\n") != -1 ? list_url[i][0].substring(0, list_url[i][0].indexOf("\n")).replace("https://drive.google.com/open?id=", "").replace("https://drive.google.com/file/d/", "").replace("/view?usp=sharing", "") : list_url[i][0].replace("https://drive.google.com/open?id=", "").replace("https://drive.google.com/file/d/", "").replace("/view?usp=sharing", ""))
+    let type = image.getBlob().getContentType()
+    if (type == "image/jpeg" || type == "image/png") {
+      //画像を挿入
       sheet.insertImage(ImgApp.doResize(image.getId(), 1000).blob, 1, 4)
     }
 
